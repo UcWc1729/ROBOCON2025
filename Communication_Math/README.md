@@ -7,39 +7,39 @@
 ## 数学算法
 ### 篮球运动轨迹模拟与优化
 #### 简介
-通过数值模拟的方法，计算篮球在考虑空气阻力和马格努斯力（Magnus effect）情况下的运动轨迹，并利用模拟退火算法（Simulated Annealing）优化篮球的初始速度，以使其达到指定的垂直高度。
-功能模块
-1. 篮球运动轨迹模拟
-    函数名称：gd(x_t, v, theta)
-    功能描述：根据给定的水平距离 x_t、初始速度 v 和发射角度 theta，计算篮球在考虑空气阻力和马格努斯力情况下的垂直高度 y。
-    输入参数：
-        x_t：目标水平距离（单位：米）。
-        v：篮球的初始速度（单位：米/秒）。
-        theta：发射角度（单位：弧度）。
-    输出结果：篮球在水平距离 x_t 处的垂直高度 y（单位：米）。
-2. 优化目标函数
-    函数名称：object(distance, d_z, v, theta)
-    功能描述：计算篮球在给定初始速度 v 和发射角度 theta 下，到达目标水平距离 distance 时的垂直高度与期望高度 d_z 之间的绝对误差。
-    输入参数：
-        distance：目标水平距离（单位：米）。
-        d_z：期望的垂直高度（单位：米）。
-        v：篮球的初始速度（单位：米/秒）。
-        theta：发射角度（单位：弧度）。
-    输出结果：绝对误差值。
+通过数值模拟的方法，计算篮球在考虑空气阻力和马格努斯力（Magnus effect）情况下的运动轨迹，并利用模拟退火算法（Simulated Annealing）优化篮球的初始速度，以使其达到指定的垂直高度。  
+功能模块  
+1. 篮球运动轨迹模拟  
+    函数名称：gd(x_t, v, theta)  
+    功能描述：根据给定的水平距离 x_t、初始速度 v 和发射角度 theta，计算篮球在考虑空气阻力和马格努斯力情况下的垂直高度 y。  
+    输入参数：  
+        x_t：目标水平距离（单位：米）。  
+        v：篮球的初始速度（单位：米/秒）。  
+        theta：发射角度（单位：弧度）。  
+    输出结果：篮球在水平距离 x_t 处的垂直高度 y（单位：米）。  
+2. 优化目标函数  
+    函数名称：object(distance, d_z, v, theta)  
+    功能描述：计算篮球在给定初始速度 v 和发射角度 theta 下，到达目标水平距离 distance 时的垂直高度与期望高度 d_z 之间的绝对误差。  
+    输入参数：  
+        distance：目标水平距离（单位：米）。  
+        d_z：期望的垂直高度（单位：米）。  
+        v：篮球的初始速度（单位：米/秒）。  
+        theta：发射角度（单位：弧度）。  
+    输出结果：绝对误差值。  
 3. 模拟退火算法
-    函数名称：mnth(objective_function, v, t_0, cooling_rate, t_end, m_iter, distance, d_z, theta, lb, ub, num_neighbors=5)
-    功能描述：利用模拟退火算法优化篮球的初始速度 v，以最小化目标函数 objective_function 的值。
-    输入参数：
-        objective_function：目标函数，即 object 函数。
-        v：初始解，即初始速度的初始值。
-        t_0：初始温度。
-        cooling_rate：降温率。
-        t_end：结束温度。
-        m_iter：最大迭代次数。
-        distance：目标水平距离（单位：米）。
-        d_z：期望的垂直高度（单位：米）。
-        theta：发射角度（单位：弧度）。
-        lb：初始速度的下界。
-        ub：初始速度的上界。
-        num_neighbors：每次迭代生成的邻域解数量（默认值为 5）。
-    输出结果：优化后的初始速度 v。
+    函数名称：mnth(objective_function, v, t_0, cooling_rate, t_end, m_iter, distance, d_z, theta, lb, ub, num_neighbors=5)  
+    功能描述：利用模拟退火算法优化篮球的初始速度 v，以最小化目标函数 objective_function 的值。  
+    输入参数：  
+        objective_function：目标函数，即 object 函数。  
+        v：初始解，即初始速度的初始值。  
+        t_0：初始温度。  
+        cooling_rate：降温率。  
+        t_end：结束温度。  
+        m_iter：最大迭代次数。  
+        distance：目标水平距离（单位：米）。  
+        d_z：期望的垂直高度（单位：米）。  
+        theta：发射角度（单位：弧度）。  
+        lb：初始速度的下界。  
+        ub：初始速度的上界。  
+        num_neighbors：每次迭代生成的邻域解数量（默认值为 5）。  
+    输出结果：优化后的初始速度 v。  
