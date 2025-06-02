@@ -19,7 +19,8 @@ class TfSubscriber(Node):
         self.received_transform = False
         self.parent_frame = 'camera_init'
         self.child_frame = 'aft_mapped'
-
+        self.x=0.0
+        self.y=0.0
     def check_tf(self):
         if self.received_transform:
             self.timer.cancel()  # 停止定时器
@@ -38,11 +39,12 @@ class TfSubscriber(Node):
             
             self.get_logger().info(f'Translation: ({translation.x}, {translation.y}, {translation.z})')
             self.get_logger().info(f'Rotation: ({rotation.x}, {rotation.y}, {rotation.z}, {rotation.w})')
-            
+            self.x=translation.x
+            self.y=translation.y
             self.received_transform = True
             self.timer.cancel()  # 停止定时器
-            self.get_logger().info("Successfully received transform, shutting down...")
-            rclpy.shutdown()
+            self.get_logger().info("Successfully received transform")
+            #rclpy.shutdown()
             
         except TransformException as ex:
             self.get_logger().warn(f'Failed to get transform: {ex}')
@@ -62,21 +64,25 @@ def find_vector(x,y,z,theta):
 def main(args=None):
     rclpy.init(args=args)
     node = TfSubscriber()
-    try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
+    # try:
+    #     rclpy.spin(node)
+    # except KeyboardInterrupt:
+    #     pass
+    x=node.x
+    y=node.y
     node.destroy_node()
-    rclpy.shutdown()
-    distance=np.sqrt((4-abs(node.x))**2+(15-node.y)**2)
+    # rclpy.shutdown()
+    distance=np.sqrt((4-abs(x))**2+(15-y)**2)
     d_z=1.53
     theta=np.pi/4
     vector=mnth(object,8,100,0.95,1e-3,100,distance,d_z,theta,7,10)
-    serial_send_node = SerialSender(vector)
-    rclpy.spin(serial_send_node)
+    print(vector)
+    # serial_send_node = SerialSender(vector)
+    # rclpy.spin(serial_send_node)
     #rclpy.spin(node)#循环节点
-    serial_send_node.destroy_node()
+    # serial_send_node.destroy_node()
     rclpy.shutdown()
 if __name__ ==  '__main__':
     main()
+     
      
