@@ -10,7 +10,7 @@ def gd(x_t,v,theta):
     rho = 1.18  # 空气密度 (kg/m^3)
     Cd = 0.40  # 空气阻力系数
     A = np.pi * R**2  # 篮球横截面积 (m^2)
-    x0, y0 = 0, 0.9  # 初始位置 (m)
+    x0, y0 = 0, 0  # 初始位置 (m)
     vx0, vy0 = v * np.cos(theta), v * np.sin(theta)  # 初始速度 (m/s)
     omega = 10  # 角速度 (rad/s)
     Gamma = omega * np.pi * R**2  # 环流强度
@@ -45,7 +45,7 @@ def object(distance,d_z,v,theta):
     return o_value
 def mnth(objective_function, v, t_0, cooling_rate, t_end, m_iter, distance, d_z, theta, lb, ub, num_neighbors=5):
     """
-    模拟退火算法，支持生成多个邻域解
+    模拟退火算法
     :param objective_function: 目标函数
     :param v: 初始解
     :param t_0: 初始温度
@@ -72,7 +72,7 @@ def mnth(objective_function, v, t_0, cooling_rate, t_end, m_iter, distance, d_z,
         neighbors = []
         for _ in range(num_neighbors):
             new_solution = c_solution + np.random.uniform(-1, 1)
-            new_solution = max(lb, min(new_solution, ub))  # 确保新解在上下界范围内
+            new_solution = max(lb, min(new_solution, ub))  
             new_value = objective_function(distance, d_z, new_solution, theta)
             neighbors.append((new_solution, new_value))
 
@@ -92,12 +92,12 @@ def mnth(objective_function, v, t_0, cooling_rate, t_end, m_iter, distance, d_z,
         iter += 1
 
     return best_solution
-def main():
-#test
-    v0=9
-    distance=6
-    theta=math.pi/3
-    d_z=1.53
-    v=mnth(object,v0,100,0.95,1e-3,100,distance,d_z,theta,7,10)
-    print(v)
-    print(gd(distance,v,theta))
+# def main():
+# #test
+#     v0=9
+#     distance=6
+#     theta=math.pi/4
+#     d_z=1.53
+#     v=mnth(object,v0,100,0.95,1e-3,100,distance,d_z,theta,7,10)
+#     print(v)
+#     print(gd(distance,v,theta))

@@ -8,8 +8,8 @@ from dpt.cktongxin import SerialSender
 from tf2_ros import TransformException
 from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
-
-
+from dpt.qjhs import mnth,gd,object
+import numpy as np
 class TfSubscriber(Node):
     def __init__(self):
         super().__init__('tf_subscriber')
@@ -59,24 +59,24 @@ def find_vector(x,y,z,theta):
     vector=(a/b)**0.5
     return float(vector)
 #####################################################################
-
 def main(args=None):
     rclpy.init(args=args)
     node = TfSubscriber()
-    
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
-    
     node.destroy_node()
     rclpy.shutdown()
-    vector=find_vector(node.x,node.y,0.9,math.pi/3)
+    distance=np.sqrt((4-abs(node.x))**2+(15-node.y)**2)
+    d_z=1.53
+    theta=np.pi/4
+    vector=mnth(object,8,100,0.95,1e-3,100,distance,d_z,theta,7,10)
     serial_send_node = SerialSender(vector)
     rclpy.spin(serial_send_node)
     #rclpy.spin(node)#循环节点
     serial_send_node.destroy_node()
     rclpy.shutdown()
-if __name__ == '__main__':
+if __name__ ==  '__main__':
     main()
      
