@@ -1,0 +1,25 @@
+--cpu Cortex-M4.fp --scatter d:/stm32project/robocon/C°å/C_USART_receive_and_send/MDK-ARM/build/usart/usart.sct --strict --summary_stderr --info summarysizes --map --xref --callgraph --symbols --info sizes --info totals --info unused --info veneers
+--list .\build\usart\usart.map
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_cortex.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma_ex.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_exti.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_flash.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_flash_ex.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_flash_ramfunc.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr_ex.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc_ex.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim_ex.o
+.\build\usart\.obj\__\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.o
+.\build\usart\.obj\__\Src\gpio.o
+.\build\usart\.obj\__\Src\main.o
+.\build\usart\.obj\__\Src\stm32f4xx_hal_msp.o
+.\build\usart\.obj\__\Src\stm32f4xx_it.o
+.\build\usart\.obj\__\Src\system_stm32f4xx.o
+.\build\usart\.obj\__\Src\usart.o
+.\build\usart\.obj\startup_stm32f407xx.o -o .\build\usart\usart.axf
