@@ -251,7 +251,7 @@ class BasketballRobot:
             print("❌ 无法计算投篮参数")
             return False
         
-        print(f"🎯 目标锁定！执行投篮...")
+        print("🎯 目标锁定！执行投篮...")
         print(f"   距离: {shot_params['distance']:.2f}m")
         print(f"   置信度: {shot_params['confidence']:.3f}")
         print(f"   角度: {shot_params['angle']}°")
@@ -282,7 +282,7 @@ class BasketballRobot:
                 distance_diff = abs(target.distance - self.optimal_distance)
                 
                 if distance_diff <= self.distance_tolerance:
-                    print(f"✅ 目标在最佳距离范围内，准备投篮...")
+                    print("✅ 目标在最佳距离范围内，准备投篮...")
                     if self.execute_shot():
                         shot_count += 1
                         time.sleep(3)  # 投篮后等待3秒

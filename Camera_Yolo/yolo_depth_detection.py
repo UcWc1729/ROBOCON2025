@@ -578,7 +578,7 @@ class YOLODepthDetector:
                                 print(f"   原始深度: {raw_val:.1f}mm | 平滑后: {smoothed_val:.1f}mm | 差值: {diff:.1f}mm")
                                 print(f"   深度稳定性: {history_std:.1f}mm | 状态: {movement_status} | 阈值: {adaptive_threshold:.0f}mm")
                         else:
-                            print(f"   距离: 无深度数据")
+                            print("   距离: 无深度数据")
                         print()
                     
                     last_print_time = current_time
