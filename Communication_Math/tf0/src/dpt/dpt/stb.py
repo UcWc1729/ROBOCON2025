@@ -64,10 +64,10 @@ def find_vector(x,y,z,theta):
 def main(args=None):
     rclpy.init(args=args)
     node = TfSubscriber()
-    # try:
-    #     rclpy.spin(node)
-    # except KeyboardInterrupt:
-    #     pass
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
     x=node.x
     y=node.y
     node.destroy_node()
