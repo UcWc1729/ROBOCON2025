@@ -15,11 +15,11 @@
 Robocon2025/
 ├── README.md              # 项目总说明
 ├── docs/                  # 项目相关文档、规则、设计报告等
-├── camera_yolo/           # 摄像头视觉识别及YOLO目标检测相关代码
-├── lidar_pointlio/        # 激光雷达+IMU定位与点云算法相关代码
-├── communication/         # ESP-NOW等通信、位置同步协议与数学算法
-├── robot_control/         # 运动控制、机械驱动、底盘和投篮机构代码
-└── utils/                 # 公用工具函数、脚本、测试工具等
+├── Camera_Yolo/           # 摄像头视觉识别及YOLO目标检测相关代码
+├── Lidar_Pointlio/        # 激光雷达+IMU定位与点云算法相关代码
+├── Communication_Math/    # ESP-NOW等通信、位置同步协议与数学算法
+├── Robot_Control/         # 运动控制、机械驱动、底盘和投篮机构代码
+└── untils/                # 公用工具函数、脚本、测试工具等
 ```
 
 ---
