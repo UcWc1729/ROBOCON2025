@@ -25,16 +25,16 @@
 ```plaintext
 Lidar_Pointlio/
 ├── src/                           # 核心源代码
-│   ├── laserMapping.cpp           # SLAM主程序 (1323行)
+│   ├── laserMapping.cpp           # SLAM主程序 
 │   │   ├── 点云-IMU数据同步
 │   │   ├── 特征提取与配准
 │   │   ├── 状态估计与优化
 │   │   └── 地图更新与发布
-│   ├── preprocess.cpp             # 点云预处理 (733行)
+│   ├── preprocess.cpp             # 点云预处理 
 │   │   ├── 多雷达格式解析
 │   │   ├── 去畸变与滤波
 │   │   └── 特征点提取
-│   ├── Estimator.cpp              # 状态估计器 (435行)
+│   ├── Estimator.cpp              # 状态估计器 
 │   │   ├── IKFoM滤波器实现
 │   │   └── 协方差传播
 │   ├── IMU_Processing.hpp         # IMU数据处理
