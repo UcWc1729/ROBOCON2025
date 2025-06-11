@@ -1,14 +1,20 @@
-#include "M3508_Can.h"
+#include "wheelchassis.h"
 
 uint8_t G_FeedbackData[4][8]; // 反馈数据
 MotionControl G_WheelChassisMotion; // 运动控制结构体，通过修改它的值来控制底盘的运动
 
 static void M3508_CAN_SendData(uint8_t *data);
+
 static void M3508_CAN_Config(void);
+
 static void M3508_GetFeedbackData(MotorData *data);
+
 static void M3508_CAN_SendCurrent(float *current);
+
 static void wheelChassis_MotionControl(MotionControl *motion, MotorData *data);
+
 static void wheelChassis_RealtimeControl(float v_expect, float *v);
+
 static void wheelChassis_MotorSpeedControl(float *ExpectSpeed, float *Speed_Output, MotorData *data);
 
 /**
@@ -249,9 +255,9 @@ void wheelChassis_MotorSpeedControl(float *ExpectSpeed, float *Speed_Output, Mot
 {
     static float tmp[4];
     static float error[4], errorlast[4];
-    double Kp = 1.3;
-    double Ki = 0.14;
-    double Kd = 0;
+    static double Kp = 1.3;
+    static double Ki = 0.14;
+    static double Kd = 0;
     for (int i = 0; i < 4; i++)
     {
         error[i] = ExpectSpeed[i] - data[i].speed;
@@ -418,13 +424,10 @@ void wheelChassis_MotionCurveControl(MotionControl *motion, float *v)
 
 void wheelChassis_MotionControl(MotionControl *motion, MotorData *data)
 {
-    if (motion->state == LinearMotion)
+    if (motion->state == Linear)
     {
         static float v, v1, v2;
-        if (WheelChassisMode == 0)
-            wheelChassis_RealtimeControl(motion->MovementSpeed, &v); //遥控模式
-        else
-            wheelChassis_MotionCurveControl(motion, &v); //固定方向距离模式
+        v = motion->MovementSpeed;
         float v1_expect = v * cos(45 * PI / 180.0 - motion->RelativeAngle * PI / 180.0);
         float v2_expect = v * sin(45 * PI / 180.0 - motion->RelativeAngle * PI / 180.0);
         wheelChassis_RealtimeControl(v1_expect, &v1);
@@ -435,11 +438,9 @@ void wheelChassis_MotionControl(MotionControl *motion, MotorData *data)
         M3508_CAN_SendCurrent(Speed_Output);
     } else if (motion->state == Turn)
     {
-        static float v;
-        if (WheelChassisMode == 0)
-            wheelChassis_RealtimeControl(motion->TurnSpeed, &v); //遥控模式
-        else
-            wheelChassis_MotionCurveControl(motion, &v); //固定方向距离模式
+        static float v, v_expect;
+        v_expect = motion->TurnSpeed;
+        wheelChassis_RealtimeControl(v_expect, &v);
         float ExpectSpeed[4] = {v, v, v, v};
         float Speed_Output[4];
         wheelChassis_MotorSpeedControl(ExpectSpeed, Speed_Output, data);
