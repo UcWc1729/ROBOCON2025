@@ -1,5 +1,5 @@
-#ifndef __M3508_CAN_H
-#define __M3508_CAN_H
+#ifndef __WHEELCHASSIS_H
+#define __WHEELCHASSIS_H
 
 #include "main.h"
 #include "math.h"
@@ -36,7 +36,7 @@ typedef struct
 typedef enum
 {
     Wait = 0, //待机
-    LinearMotion, //直线运动
+    Linear, //直线运动
     Turn //原地转动
 } MotionState;
 
