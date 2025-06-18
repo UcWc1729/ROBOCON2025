@@ -1,0 +1,30 @@
+[2025-06-02 22:08:14]	[info] incremental build: 23 source files changed
+These source files will be recompiled
+---
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_cortex.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma_ex.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_exti.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_flash.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_flash_ex.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_flash_ramfunc.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_pwr_ex.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc_ex.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim_ex.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Src\gpio.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Src\main.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Src\stm32f4xx_hal_msp.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Src\stm32f4xx_it.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Src\system_stm32f4xx.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\Src\usart.c': object (.o) file not exist
+'d:\stm32project\robocon\C°å\C_USART_receive_and_send\MDK-ARM\startup_stm32f407xx.s': object (.o) file not exist
+
+[2025-06-02 22:08:17]	[done]
+	build successfully !
+
