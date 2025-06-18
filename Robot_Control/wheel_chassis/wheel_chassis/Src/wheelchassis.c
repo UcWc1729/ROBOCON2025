@@ -266,17 +266,16 @@ void wheelChassis_MotorSpeedControl(float *ExpectSpeed, float *Current_Output, M
 /**
  * @brief 调整相对电机的速度差，使其趋近于零。
  *
- * 该函数基于PID控制算法，通过计算两组相对电机的速度差，动态调整输出偏移量，
+ * 该函数基于PID控制算法，通过计算两组相对电机的速度差，动态调整输出补偿量，
  * 以实现电机速度同步（即使得相对电机的速度差为零）。
  *
- * @param Offset_Output 输出偏移量数组，用于存储计算后的偏移值。
- *                      数组长度至少为2，分别对应两组相对电机的偏移量。
+ * @param Offset_Output 输出补偿量数组，用于存储计算后的补偿值。
+ *                      数组长度至少为2，分别对应两组相对电机的补偿量。
  * @param data 输入的电机数据数组，包含每个电机的速度信息。
  *             数组长度至少为4，data[0] 和 data[2] 为一组相对电机，data[1] 和 data[3] 为另一组相对电机。
  *
  * 内部逻辑：
- * - 使用绝对值函数 `wheelChassis_AbsoluteValue` 计算每组相对电机的速度差。
- * - 根据PID公式计算偏移量：`Offset = Kp * Error + Ki * Integral + Kd * (Error - Errorlast)`。
+ * - 根据PID公式计算补偿量：`Offset = Kp * Error + Ki * Integral + Kd * (Error - Errorlast)`。
  *   其中：
  *   - `Error` 是当前速度差；
  *   - `Integral` 是误差的累积值；
@@ -286,7 +285,7 @@ void wheelChassis_MotorSpeedControl(float *ExpectSpeed, float *Current_Output, M
  * 注意：
  * - PID参数 `Kp`, `Ki`, `Kd` 当前被初始化为0，需要在实际使用中根据需求进行配置。
  * - 该函数假设输入数据的有效性，未对数组边界或空指针进行检查。
- * - 通过不断调整输出偏移量，最终使相对电机的速度差趋近于零，从而实现速度同步。
+ * - 通过不断调整输出补偿量，最终使相对电机的速度差趋近于零，从而实现速度同步。
  */
 void wheelChassis_MotorSpeedDifferenceOffset(float *Offset_Output, MotorData *data)
 {
@@ -296,12 +295,12 @@ void wheelChassis_MotorSpeedDifferenceOffset(float *Offset_Output, MotorData *da
     static float Ki = 0;
     static float Kd = 0;
 
-    Error[0] = wheelChassis_AbsoluteValue(data[2].speed) - wheelChassis_AbsoluteValue(data[0].speed);
+    Error[0] = data[2].speed + data[0].speed;
     Offset_Output[0] = Kp * Error[0] + Ki * Integral[0] + Kd * (Error[0] - Errorlast[0]);
     Integral[0] += Error[0];
     Errorlast[0] = Error[0];
 
-    Error[1] = wheelChassis_AbsoluteValue(data[1].speed) - wheelChassis_AbsoluteValue(data[3].speed);
+    Error[1] = data[1].speed + data[3].speed;
     Offset_Output[1] = Kp * Error[1] + Ki * Integral[1] + Kd * (Error[1] - Errorlast[1]);
     Integral[1] += Error[1];
     Errorlast[1] = Error[1];
@@ -478,16 +477,10 @@ void wheelChassis_MotionControl(MotionControl *motion, MotorData *data)
         wheelChassis_MotorSpeedControl(ExpectSpeed, Current_Output, data);//控制各轮达到期望速度
         wheelChassis_MotorSpeedDifferenceOffset(Offect_Output,data);//使相对轮的差速为0
 
-        Current_Output[0] += Offect_Output[0];
-        Current_Output[2] += Offect_Output[0];
-        Current_Output[1] += Offect_Output[1];
-        Current_Output[3] += Offect_Output[1];
-
-        //若修改了方向
-        //Current_Output[0] -= Offect_Output[0];
-        //Current_Output[2] -= Offect_Output[0];
-        //Current_Output[1] -= Offect_Output[1];
-        //Current_Output[3] -= Offect_Output[1];
+        Current_Output[0] -= Offect_Output[0];
+        Current_Output[2] -= Offect_Output[0];
+        Current_Output[1] -= Offect_Output[1];
+        Current_Output[3] -= Offect_Output[1];
 
         M3508_CAN_SendCurrent(Current_Output);
     }
