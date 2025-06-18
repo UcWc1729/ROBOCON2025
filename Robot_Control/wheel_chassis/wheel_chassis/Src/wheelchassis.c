@@ -4,18 +4,14 @@ uint8_t G_FeedbackData[4][8]; // 反馈数据
 MotionControl G_WheelChassisMotion; // 运动控制结构体，通过修改它的值来控制底盘的运动
 
 static void M3508_CAN_SendData(uint8_t *data);
-
 static void M3508_CAN_Config(void);
-
 static void M3508_GetFeedbackData(MotorData *data);
-
 static void M3508_CAN_SendCurrent(float *current);
-
 static void wheelChassis_MotionControl(MotionControl *motion, MotorData *data);
-
 static void wheelChassis_RealtimeControl(float v_expect, float *v);
-
-static void wheelChassis_MotorSpeedControl(float *ExpectSpeed, float *Speed_Output, MotorData *data);
+static void wheelChassis_MotorSpeedControl(float *ExpectSpeed, float *Current_Output, MotorData *data);
+static float wheelChassis_AbsoluteValue(float num);
+static void wheelChassis_MotorSpeedDifferenceOffset(float *Offset_Output, MotorData *data);
 
 /**
  * @brief 初始化并启动 CAN 通信。
@@ -242,7 +238,7 @@ void M3508_CAN_SendCurrent(float *current)
  * 3. 更新误差累加值和上一次误差值，以便下一次调用时使用。
  *
  * @param Expectspeed 指向包含 4 个电机期望速度的浮点数数组的指针。单位为转每秒 (r/s)。
- * @param Speed_Output 指向存储计算后的输出控制量的浮点数数组的指针。数组大小应至少为 4。
+ * @param Current_Output 指向存储计算后的输出控制量的浮点数数组的指针。数组大小应至少为 4。
  * @param data 指向包含 4 个电机当前状态数据的 MotorData 数组的指针。
  *
  * @note
@@ -251,20 +247,64 @@ void M3508_CAN_SendCurrent(float *current)
  *
  * @see MotorData
  */
-void wheelChassis_MotorSpeedControl(float *ExpectSpeed, float *Speed_Output, MotorData *data)
+void wheelChassis_MotorSpeedControl(float *ExpectSpeed, float *Current_Output, MotorData *data)
 {
-    static float tmp[4];
-    static float error[4], errorlast[4];
-    static double Kp = 1.3;
-    static double Ki = 0.14;
-    static double Kd = 0;
+    static float Integral[4];
+    static float Error[4], Errorlast[4];
+    static float Kp = 1.3f;
+    static float Ki = 0.14f;
+    static float Kd = 0;
     for (int i = 0; i < 4; i++)
     {
-        error[i] = ExpectSpeed[i] - data[i].speed;
-        Speed_Output[i] = Kp * (ExpectSpeed[i] - data[i].speed) + Ki * tmp[i] + Kd * (error[i] - errorlast[i]);
-        tmp[i] += ExpectSpeed[i] - data[i].speed;
-        errorlast[i] = error[i];
+        Error[i] = ExpectSpeed[i] - data[i].speed;
+        Current_Output[i] = Kp * (ExpectSpeed[i] - data[i].speed) + Ki * Integral[i] + Kd * (Error[i] - Errorlast[i]);
+        Integral[i] += ExpectSpeed[i] - data[i].speed;
+        Errorlast[i] = Error[i];
     }
+}
+
+/**
+ * @brief 调整相对电机的速度差，使其趋近于零。
+ *
+ * 该函数基于PID控制算法，通过计算两组相对电机的速度差，动态调整输出偏移量，
+ * 以实现电机速度同步（即使得相对电机的速度差为零）。
+ *
+ * @param Offset_Output 输出偏移量数组，用于存储计算后的偏移值。
+ *                      数组长度至少为2，分别对应两组相对电机的偏移量。
+ * @param data 输入的电机数据数组，包含每个电机的速度信息。
+ *             数组长度至少为4，data[0] 和 data[2] 为一组相对电机，data[1] 和 data[3] 为另一组相对电机。
+ *
+ * 内部逻辑：
+ * - 使用绝对值函数 `wheelChassis_AbsoluteValue` 计算每组相对电机的速度差。
+ * - 根据PID公式计算偏移量：`Offset = Kp * Error + Ki * Integral + Kd * (Error - Errorlast)`。
+ *   其中：
+ *   - `Error` 是当前速度差；
+ *   - `Integral` 是误差的累积值；
+ *   - `Errorlast` 是上一次的速度差。
+ * - 更新积分项和上一次的误差值以便后续调用使用。
+ *
+ * 注意：
+ * - PID参数 `Kp`, `Ki`, `Kd` 当前被初始化为0，需要在实际使用中根据需求进行配置。
+ * - 该函数假设输入数据的有效性，未对数组边界或空指针进行检查。
+ * - 通过不断调整输出偏移量，最终使相对电机的速度差趋近于零，从而实现速度同步。
+ */
+void wheelChassis_MotorSpeedDifferenceOffset(float *Offset_Output, MotorData *data)
+{
+    static float Integral[2];
+    static float Error[2], Errorlast[2];
+    static float Kp = 0; //正数
+    static float Ki = 0;
+    static float Kd = 0;
+
+    Error[0] = wheelChassis_AbsoluteValue(data[2].speed) - wheelChassis_AbsoluteValue(data[0].speed);
+    Offset_Output[0] = Kp * Error[0] + Ki * Integral[0] + Kd * (Error[0] - Errorlast[0]);
+    Integral[0] += Error[0];
+    Errorlast[0] = Error[0];
+
+    Error[1] = wheelChassis_AbsoluteValue(data[1].speed) - wheelChassis_AbsoluteValue(data[3].speed);
+    Offset_Output[1] = Kp * Error[1] + Ki * Integral[1] + Kd * (Error[1] - Errorlast[1]);
+    Integral[1] += Error[1];
+    Errorlast[1] = Error[1];
 }
 
 /**
@@ -433,19 +473,35 @@ void wheelChassis_MotionControl(MotionControl *motion, MotorData *data)
         wheelChassis_RealtimeControl(v1_expect, &v1);
         wheelChassis_RealtimeControl(v2_expect, &v2);
         float ExpectSpeed[4] = {v1, -v2, -v1, v2};
-        float Speed_Output[4];
-        wheelChassis_MotorSpeedControl(ExpectSpeed, Speed_Output, data);
-        M3508_CAN_SendCurrent(Speed_Output);
-    } else if (motion->state == Turn)
+        float Current_Output[4],Offect_Output[2];
+
+        wheelChassis_MotorSpeedControl(ExpectSpeed, Current_Output, data);//控制各轮达到期望速度
+        wheelChassis_MotorSpeedDifferenceOffset(Offect_Output,data);//使相对轮的差速为0
+
+        Current_Output[0] += Offect_Output[0];
+        Current_Output[2] += Offect_Output[0];
+        Current_Output[1] += Offect_Output[1];
+        Current_Output[3] += Offect_Output[1];
+
+        //若修改了方向
+        //Current_Output[0] -= Offect_Output[0];
+        //Current_Output[2] -= Offect_Output[0];
+        //Current_Output[1] -= Offect_Output[1];
+        //Current_Output[3] -= Offect_Output[1];
+
+        M3508_CAN_SendCurrent(Current_Output);
+    }
+    else if (motion->state == Turn)
     {
         static float v, v_expect;
         v_expect = motion->TurnSpeed;
         wheelChassis_RealtimeControl(v_expect, &v);
         float ExpectSpeed[4] = {v, v, v, v};
-        float Speed_Output[4];
-        wheelChassis_MotorSpeedControl(ExpectSpeed, Speed_Output, data);
-        M3508_CAN_SendCurrent(Speed_Output);
-    } else if (motion->state == Wait)
+        float Current_Output[4];
+        wheelChassis_MotorSpeedControl(ExpectSpeed, Current_Output, data);
+        M3508_CAN_SendCurrent(Current_Output);
+    }
+    else if (motion->state == Wait)
     {
         motion->MovementDisplacement = 0;
         motion->MovementSpeed = 0;
