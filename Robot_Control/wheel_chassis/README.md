@@ -43,6 +43,8 @@ wheel_chassis
 
 - **电机速度控制**：
     - `wheelChassis_MotorSpeedControl()`：控制电机的速度以达到期望值。
+- **电机差速控制**：
+  - `wheelChassis_MotorSpeedDifferenceOffset()`:使相对电机的差速为0
 
 ---
 
