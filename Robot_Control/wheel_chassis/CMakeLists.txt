@@ -36,6 +36,9 @@ enable_language(C ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
+        wheel_chassis/Src/cordic.c
+        wheel_chassis/Src/ParamsUsart.c
+        wheel_chassis/Src/wheelchassis.c
 )
 
 # Add STM32CubeMX generated sources
@@ -49,7 +52,10 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
-        wheel_chassis/Src/WheelChassis.c
+        wheel_chassis/Src/cordic.c
+        wheel_chassis/Src/ParamsUsart.c
+        wheel_chassis/Src/wheelchassis.c
+
 )
 
 # Add include paths

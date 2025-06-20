@@ -2,13 +2,12 @@
 #define __WHEELCHASSIS_H
 
 #include "main.h"
-#include "math.h"
+
 #include "can.h"
+#include "cordic.h"
 
 #define PI 3.1415926
-#define Acceleration 0.5 //加速度
-#define Deceleration 0.5 //减速度
-#define TimeStep 0.001 //时间步长，和定时中断频率有关
+#define TIMESTEP 0.001f //时间步长，和定时中断频率有关
 
 /***************方向定义***************/
 //float ExpectSpeed[4] = {v1, -v2, -v1, v2};
@@ -34,6 +33,23 @@
              /*-180或180度*/
 
 
+typedef struct
+{
+    float Kp;
+    float Ki;
+    float Kd;
+    float IntegralLimit; // 积分限幅
+    float OutputLimit;   // 输出限幅
+}PID_Params;
+
+typedef struct
+{
+    float Chassis_R;
+    float Wheel_R;
+    float Acceleration;
+    float Deceleration;
+}Chassis_Params;
+
 //电机的数据
 typedef struct
 {
@@ -41,14 +57,15 @@ typedef struct
     float speed;
     float TorqueCurrent;
     int8_t temperature;
-} MotorData;
+}MotorData;
 
 //运动状态
 typedef enum
 {
     Wait = 0, //待机
     Linear, //直线运动
-    Turn //原地转动
+    Turn1,
+    Turn2//原地转动
 } MotionState;
 
 //运动控制结构体
@@ -64,9 +81,20 @@ typedef struct
 
     //原地转动
     float TurnSpeed; //转动的速度
-    float TurnDisplacement; //转动的距离
+    float TurnAngle; //底盘旋转的角度
+    uint8_t TurnAngleChange_Flag;
 } MotionControl;
 
-void M3508_Can_Start(void);
+extern PID_Params G_Speed_PID_Params;
+extern PID_Params G_DifSpeed_PID_Params;
+extern PID_Params G_Angle_PID_Params;
+extern Chassis_Params G_Chassis_Params;
+extern MotionControl G_WheelChassisMotion;
+
+void wheelChassis_Init(void);
+void wheelChassis_Linear(float MovementSpeed,float RelativeAngle);
+void wheelChassis_Turn1(float TurnSpeed);
+void wheelChassis_Turn2(float TurnAngle);
+void wheelChassis_Stop(void);
 
 #endif
