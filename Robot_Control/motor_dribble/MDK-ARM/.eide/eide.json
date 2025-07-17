@@ -282,7 +282,8 @@
             }
           ]
         },
-        "options": "null"
+        "options": "null",
+        "archExtensions": ""
       },
       "uploader": "STLink",
       "uploadConfig": {
@@ -318,6 +319,7 @@
           "../Drivers/CMSIS/Device/ST/STM32F4xx/Include",
           "../Drivers/CMSIS/Include",
           "../User",
+          ".cmsis/include",
           "RTE/_test_feedback"
         ],
         "libList": [],
@@ -354,5 +356,5 @@
       }
     }
   },
-  "version": "3.5"
+  "version": "3.6"
 }
