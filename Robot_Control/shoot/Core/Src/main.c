@@ -128,10 +128,10 @@ int main(void)
   
   // 串口初始化，用于数据上报
   serialplot.Init(&huart2, 3, NULL);
-    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_2, 840);
-    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_3, 840);
-    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_4, 840);
-    HAL_Delay(6000); // 等待1秒，确保系统稳定
+    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_2, 500);
+    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_3, 500);
+    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_4, 500);
+    HAL_Delay(3000); // 开环缓启动，等待3秒，确保系统稳定
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -161,9 +161,9 @@ int main(void)
     if (output_pid[2] > __HAL_TIM_GET_AUTORELOAD(&htim5)) output_pid[2] = __HAL_TIM_GET_AUTORELOAD(&htim5);
 
     // 设置PWM占空比，实现对电机的速度控制
-    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_2, Motor_pid[0].OUT);
-    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_3, Motor_pid[1].OUT);
-    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_4, Motor_pid[2].OUT);
+    // __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_2, Motor_pid[0].OUT);
+    // __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_3, Motor_pid[1].OUT);
+    // __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_4, Motor_pid[2].OUT);
 
     //发送数据到上位机，便于调试和监控
         serialplot.Set_Data(6, &Tx_1, &output_pid[0], &Tx_2, &output_pid[1],&Tx_3, &output_pid[3]);
