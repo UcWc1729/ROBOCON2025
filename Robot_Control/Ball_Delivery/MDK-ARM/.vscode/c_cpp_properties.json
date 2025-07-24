@@ -3,17 +3,17 @@
         {
             "name": "test_feedback",
             "includePath": [
-                "c:\\Users\\62530\\Desktop\\Ball_Delivery\\Core\\Inc",
-                "c:\\Users\\62530\\Desktop\\Ball_Delivery\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
-                "c:\\Users\\62530\\Desktop\\Ball_Delivery\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
-                "c:\\Users\\62530\\Desktop\\Ball_Delivery\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
-                "c:\\Users\\62530\\Desktop\\Ball_Delivery\\Drivers\\CMSIS\\Include",
-                "c:\\Users\\62530\\Desktop\\Ball_Delivery\\User",
+                "d:\\Code\\ROBOCON2025\\Robot_Control\\Ball_Delivery\\Core\\Inc",
+                "d:\\Code\\ROBOCON2025\\Robot_Control\\Ball_Delivery\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
+                "d:\\Code\\ROBOCON2025\\Robot_Control\\Ball_Delivery\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
+                "d:\\Code\\ROBOCON2025\\Robot_Control\\Ball_Delivery\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
+                "d:\\Code\\ROBOCON2025\\Robot_Control\\Ball_Delivery\\Drivers\\CMSIS\\Include",
+                "d:\\Code\\ROBOCON2025\\Robot_Control\\Ball_Delivery\\User",
                 "D:\\keil5\\ARM\\ARMCC\\include",
                 "D:\\keil5\\ARM\\ARMCC\\include\\rw",
-                "c:\\Users\\62530\\Desktop\\Ball_Delivery\\MDK-ARM",
-                "c:\\Users\\62530\\Desktop\\Ball_Delivery\\Core\\Src",
-                "c:\\Users\\62530\\Desktop\\Ball_Delivery\\Drivers\\STM32F4xx_HAL_Driver\\Src"
+                "d:\\Code\\ROBOCON2025\\Robot_Control\\Ball_Delivery\\MDK-ARM",
+                "d:\\Code\\ROBOCON2025\\Robot_Control\\Ball_Delivery\\Core\\Src",
+                "d:\\Code\\ROBOCON2025\\Robot_Control\\Ball_Delivery\\Drivers\\STM32F4xx_HAL_Driver\\Src"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

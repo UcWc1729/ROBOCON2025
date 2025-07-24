@@ -88,7 +88,7 @@ void CAN_Motor_Call_Back(Struct_CAN_Rx_Buffer *Rx_Buffer)
 {
     switch (Rx_Buffer->Header.StdId)
     {
-        case (0x201):
+        case (0x205):
         {
             motor.CAN_RxCpltCallback(Rx_Buffer->Data);
         }
@@ -182,25 +182,30 @@ int main(void)
 
     serialplot.Init(&huart2, 6, (char **)Variable_Assignment_List);
 
-    motor.PID_Angle.Init(15.0f, 1.25f, 0.0f, 0.0f, 15.0f * PI, 15.0f * PI);
-    motor.PID_Omega.Init(180.0f, 65.0f, 0.0f, 0.0f, 2500.0f, 2500.0f);
-    motor.Init(&hcan1, CAN_Motor_ID_0x201, Control_Method_ANGLE);
+    motor.PID_Angle.Init(18.0f, 1.25f, 0.0f, 0.0f, 15.0f * PI, 15.0f * PI);
+    motor.PID_Omega.Init(200.0f, 65.0f, 0.0f, 0.0f, 2500.0f, 2500.0f);
+    motor.Init(&hcan1, CAN_Motor_ID_0x205, Control_Method_ANGLE);
     
     // 启动时立即设置目标位置为-3π（送球位置）
     motor.Set_Target_Angle(-3.0f * PI);
-    int motion_stage = 0; // 0: 送球阶段, 1: 完成阶段
+    int motion_stage = 0; // 送球标志位，0: 送球阶段, 1: 完成阶段
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     while (1)
     {
-        //如果计时到2000ms并且还在送球阶段，就回到0位置
+        //如果计时到1800ms并且还在送球阶段，就回到0位置
         Counter++;
-        if(Counter >= 2000 && motion_stage == 0)
+        if(Counter >= 1800 && motion_stage == 0)
         {
             motion_stage = 1;
             Counter = 0;
+            //重新设置目标值为0的PID参数
+            motor.PID_Angle.Set_K_P(10.0f);
+            motor.PID_Angle.Set_K_I(.8f);
+            motor.PID_Omega.Set_K_P(120.0f);
+            motor.PID_Omega.Set_K_I(50.0f); 
             motor.Set_Target_Angle(0.0f); // 回到初始位置
         }
 
