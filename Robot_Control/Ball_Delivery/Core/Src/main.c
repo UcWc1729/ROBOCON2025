@@ -203,9 +203,9 @@ int main(void)
             Counter = 0;
             //重新设置目标值为0的PID参数
             motor.PID_Angle.Set_K_P(10.0f);
-            motor.PID_Angle.Set_K_I(.8f);
-            motor.PID_Omega.Set_K_P(120.0f);
-            motor.PID_Omega.Set_K_I(50.0f); 
+            motor.PID_Angle.Set_K_I(0.8f);
+            motor.PID_Omega.Set_K_P(110.0f);
+            motor.PID_Omega.Set_K_I(45.0f); 
             motor.Set_Target_Angle(0.0f); // 回到初始位置
         }
 
